@@ -6,7 +6,40 @@ import './file-manager.css'
 import addIcon from '../../assets/Add_round.png';
 
 function FileManager(){
-    const programs = ["BS IT", "BS CS", "BS IS", "BS EMC", "BS DS"];
+    //const programs = ["BS IT", "BS CS", "BS IS", "BS EMC", "BS DS"];
+    
+        const programs = [
+                            "ETY School of Business", 
+                            "School of ARIDBE", 
+                            "School of CBMES", 
+                            "School of CEGE", 
+                            "School of EECE",
+                            "School of HS", 
+                            "School of IE-EMG", 
+                            "School of IT", 
+                            "School of Medicine",
+                            "School of MME", 
+                            "School of MS", 
+                            "School of Nursing", 
+                            "School of THM",
+                            "Senior High School"];
+/*
+        const manageFilesDepartments = [
+                            "E.T. Yuchenco School of Business", 
+                            "School of Architecture, Industrial Design, and the Built Environment (ARIDBE)", 
+                            "School of Chemical, Biological, and Materials Engineering and Sciences (CBMES)", 
+                            "School of Civil, Environmental, and Geological Engineering (CEGE)", 
+                            "School of Electrical, Electronics, and Computer Engineering (EECE)",
+                            "School of Health Sciences (HS)", 
+                            "School of Industrial Engineering and Engineering Management (IE-EMG)", 
+                            "School of Information Technology (IT)", 
+                            "School of Medicine",
+                            "School of Mechanical, Manufacturing, and Energy Engineering (MME)", 
+                            "School of Media Studies (MS)", 
+                            "School of Nursing", 
+                            "School of Tourism and Hospitality Management (THM)",
+                            "Senior High School"];
+    */
     const schoolYears = ["A.Y 2024 - 2025", "A.Y 2023 - 2024", "A.Y 2022 - 2023"];
 
     const [selectedProgram, setSelectedProgram] = useState("Choose Program");
