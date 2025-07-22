@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import NavigationBar from './components/navigation-bar'
 import Header from './components/header'
-import ContentBody from './components/content-body'
+import ContentBody from './content-body'
 import './App.css'
 
 function App() {

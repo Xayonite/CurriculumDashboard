@@ -16,6 +16,7 @@
     display: flex;
     width: 100%;
     gap: 24px;
+    margin-top: 10px;
     text-align: center;
 }
 
@@ -46,7 +47,7 @@
     font-size: 15px;
 }
 
-.upload-button{
+.select-file-button{
     border-radius: 10px;
     border: solid;
     border-color: black;
@@ -56,15 +57,59 @@
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
     padding: 6px 12px;
-    width: 174px;
+    min-width: 174px;
+    max-width: calc(100vw - 20px);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
+.upload-button{
+    border-radius: 8px;
+    border: solid;
+    border-color: #191616;
+    border-width: 1px;
+    background-color: #191616;
+    color: white;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    margin-top: 15px;
+    height: 30px;
+    width: 160px;
+    justify-content: true;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.6s ease;
+}
+
+.upload-button:hover{
+    border-color: #646464;
+    background-color: #646464;
+}
+
+.upload-area{
+    display: flex;
+    flex-direction: column;
+}
+
 
 .file-name{
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
     margin-top: auto;
     margin-bottom: auto;
+}
+
+.manage-file-container {
+
+    border: solid;
+    border-width: 1px;
+    border-color: black;
+    height: 500px;
+    max-width:calc(100vs - 20px);
+    margin-left:20px;
+    margin-right:20px;
+    padding: 10px 30px 10px 30px;
+
 }
