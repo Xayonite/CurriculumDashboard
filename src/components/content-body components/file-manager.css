@@ -1,0 +1,70 @@
+.file-manager-content{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.file-manager-content h1{
+    font-size: 24px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+}
+
+/* Drop Down Area */
+.dropdown-area{
+    display: flex;
+    width: 100%;
+    gap: 24px;
+    text-align: center;
+}
+
+.dropdown-button .dropdown-toggle{
+    border-radius: 0px;
+    border-color: black;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 6px 12px;
+    width: 212px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-button .dropdown-menu {
+    min-width: 212px;
+    border-radius: 0px;
+    margin-top: -2px !important;
+}
+
+.dropdown-option {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+.upload-button{
+    border-radius: 10px;
+    border: solid;
+    border-color: black;
+    border-width: 1px;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 6px 12px;
+    width: 174px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-name{
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: auto;
+    margin-bottom: auto;
+}

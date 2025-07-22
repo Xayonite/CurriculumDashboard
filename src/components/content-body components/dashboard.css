@@ -1,0 +1,112 @@
+.dashboard-content{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Drop Down Area */
+.dropdown-area{
+    display: flex;
+    width: 100%;
+    gap: 24px;
+}
+
+.dropdown-button .dropdown-toggle{
+    border-radius: 0px;
+    border-color: black;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 6px 12px;
+    width: 212px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-button .dropdown-menu {
+    min-width: 212px;
+    border-radius: 0px;
+    margin-top: -2px !important;
+}
+
+.dropdown-option {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+/* Statistics Area */
+.statistics-area{
+    width: 100%;
+}
+
+.statistics-area h1{
+    font-size: 24px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+}
+
+.statistics-container{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    height: 280px;
+}
+
+.statistics{
+    border: solid;
+    border-color: black;
+    border-width: 1px;
+    width: 324px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.statistics img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+
+/* Excel Area */
+.excel-area{
+    width: 100%;
+    /* border: solid; */
+}
+
+.excel-area h1{
+    font-size: 24px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+}
+
+.excel-container{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    max-width: 100%;
+    max-height: 280px;
+    overflow: auto;
+    padding: 8px;
+    border: solid;
+    border-color: black;
+    border-width: 1px;
+    box-sizing: border-box;
+}
+
+.excel-container table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
