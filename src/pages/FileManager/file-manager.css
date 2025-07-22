@@ -102,14 +102,29 @@
 }
 
 .manage-file-container {
-
     border: solid;
     border-width: 1px;
     border-color: black;
-    height: 500px;
     max-width:calc(100vs - 20px);
     margin-left:20px;
     margin-right:20px;
     padding: 10px 30px 10px 30px;
+}
 
+.manage-file-card{
+    display: flex;
+    border: solid;
+    border-width:1px;
+    border-color: black;
+    width:100%;
+    max-height: 50px;
+    justify-content: space-between;
+    align-items: center;
+    padding-right:10px;
+}
+
+.manage-file-card-title {
+    display:flex; 
+    font-size: 17px;
+    
 }

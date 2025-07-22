@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import ChooseFileBox from './subcomponents/chooseFileBox';
 import SelectDeptBox from './subcomponents/selectDeptBox';
 import FileManageCard from './subcomponents/FileManagerCard';
@@ -5,7 +6,15 @@ import './file-manager.css'
 
 
 function FileManager(){
+    const [selectedDept, setSelectedDept] = useState(null);
+    const [selectedDeptIndex, setDeptIndex] = useState(null);
 
+    const handleDeptChange = (dept, index) => {
+        setSelectedDept(dept);
+        setDeptIndex(index);
+        console.log("Selected Department:", dept);
+        console.log("Index of Department:", index);
+    };
     const manageFilesDepartments = [
                         "E.T. Yuchenco School of Business", 
                         "School of Architecture, Industrial Design, and the Built Environment (ARIDBE)", 
@@ -28,7 +37,7 @@ function FileManager(){
                 <h1>Upload File</h1>
                 
                 <div className='dropdown-area'>
-                    <SelectDeptBox />
+                    <SelectDeptBox onSelect={handleDeptChange} />
 
                     <ChooseFileBox />
                 </div>
@@ -41,7 +50,9 @@ function FileManager(){
             <h1>Manage Files</h1>
 
             <div className='manage-file-container'>
-                <FileManageCard />
+                {manageFilesDepartments.map((dept, idx) => (
+                    <FileManageCard key = {idx} title = {dept} index = {idx} />
+                ))}
             </div>
             
         </div>

@@ -9,8 +9,9 @@ function ChooseFileBox(){
     return (
         <div className = 'select-file-button'>
             <label htmlFor="file-upload-input">
-                {selectedFileName} <img src={addIcon} alt="Example" />
+                {selectedFileName} 
             </label>
+            <img src={addIcon} alt="Example" />
             <input
                 id="file-upload-input"
                 type="file"
@@ -23,6 +24,8 @@ function ChooseFileBox(){
                         setSelectedFileName("Choose File");
                     }
                 }}
+
+                
             />
         </div>
     )

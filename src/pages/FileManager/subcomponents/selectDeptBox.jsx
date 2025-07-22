@@ -3,7 +3,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import '../file-manager.css'
 
-function SelectDeptBox(){
+function SelectDeptBox({onSelect}){
     const departments = [
                         "ETY School of Business", 
                         "School of ARIDBE", 
@@ -21,6 +21,12 @@ function SelectDeptBox(){
                         "Senior High School"];
 
     const [selectedDepartment, setSelectedDepartment] = useState("Choose Department");
+    
+    const handleSelect = (option) => {
+        setSelectedDepartment(option);
+        const index = departments.indexOf(option);
+        onSelect(option, index);
+        };
 
     return (
             <DropdownButton
@@ -31,7 +37,7 @@ function SelectDeptBox(){
                     <Dropdown.Item
                         key={index}
                         className='dropdown-option'
-                        onClick={() => setSelectedDepartment(option)}>
+                        onClick={() => handleSelect(option)}>
                         {option}
                     </Dropdown.Item>
                 ))}
