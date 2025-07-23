@@ -2,12 +2,14 @@ import {useState} from 'react';
 import ChooseFileBox from './subcomponents/chooseFileBox';
 import SelectDeptBox from './subcomponents/selectDeptBox';
 import FileManageCard from './subcomponents/FileManagerCard';
+import { addFile } from '../../database/db';
 import './file-manager.css'
 
 
 function FileManager(){
     const [selectedDept, setSelectedDept] = useState(null);
     const [selectedDeptIndex, setDeptIndex] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
 
     const handleDeptChange = (dept, index) => {
         setSelectedDept(dept);
@@ -15,6 +17,18 @@ function FileManager(){
         console.log("Selected Department:", dept);
         console.log("Index of Department:", index);
     };
+
+    const handleUpload = async () => {
+        if (selectedFile && selectedDeptIndex !== null) {
+        await addFile(selectedFile, selectedDeptIndex);
+        alert('File uploaded to IndexedDB!');
+        setSelectedFile(null);
+        
+        } else {
+        alert('Please select both a file and a department.');
+        }
+    };
+
     const manageFilesDepartments = [
                         "E.T. Yuchenco School of Business", 
                         "School of Architecture, Industrial Design, and the Built Environment (ARIDBE)", 
@@ -38,12 +52,13 @@ function FileManager(){
                 
                 <div className='dropdown-area'>
                     <SelectDeptBox onSelect={handleDeptChange} />
-
-                    <ChooseFileBox />
+                    <ChooseFileBox onFileSelect={setSelectedFile}/>
                 </div>
                 
-                <button className = 'upload-button'> Upload </button>
-                     
+                <button className = 'upload-button' onClick = {handleUpload}> 
+                    Upload 
+                </button>
+
             </div>
 
             {/* Manage Files Area */}

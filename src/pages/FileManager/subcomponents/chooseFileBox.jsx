@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../file-manager.css'
-
 import addIcon from '../../../assets/Add_round.png';
 
-function ChooseFileBox(){
+function ChooseFileBox({onFileSelect}){
     const [selectedFileName, setSelectedFileName] = useState("No file selected");
+
+    const handleFileChange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                setSelectedFileName(file.name);
+                if (onFileSelect) {
+                    onFileSelect(file);
+                }
+            } else {
+                setSelectedFileName("Choose File");
+            }
+        };
 
     return (
         <div className = 'select-file-button'>
@@ -16,16 +27,7 @@ function ChooseFileBox(){
                 id="file-upload-input"
                 type="file"
                 style={{ display: 'none' }}
-                onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                        setSelectedFileName(file.name);
-                    } else {
-                        setSelectedFileName("Choose File");
-                    }
-                }}
-
-                
+                onChange={handleFileChange}
             />
         </div>
     )
