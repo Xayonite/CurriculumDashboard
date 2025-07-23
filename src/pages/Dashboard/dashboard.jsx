@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
-import Dropdown from 'react-bootstrap/Dropdown';
 import { getFilesByDept } from '../../database/db';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import SelectDeptBox from '../../components/selectDeptBox';
 import SelectFileBox from '../../components/selectFileBox';
+import SkillBarChart from '../../components/skillBarChart';
+import SkillsLineChart from '../../components/skillsLineChart';
+import { analyzeExcelWithProgression } from '../../components/analytics';
 import './dashboard.css'
 
 function Dashboard(){
@@ -12,24 +13,23 @@ function Dashboard(){
     const [selectedDeptIndex, setDeptIndex] = useState(null);
     const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState("Select File");
+    const [analytics, setAnalytics] = useState(null);
+    const [excelData, setExcelData] = useState([]);
 
     const handleDeptChange = (dept, index) => {
         setSelectedDept(dept);
         setDeptIndex(index);
+        setSelectedFile("Select File");
+        setAnalytics(null); 
         console.log("Selected Department:", dept);
         console.log("Index of Department:", index);
     };
-
-    useEffect(() => {
-        if (selectedDeptIndex !== null) {
-        fetchFiles(selectedDeptIndex);
-        }
-    }, [selectedDeptIndex]);
 
     const fetchFiles = async (deptIndex) => {
         const deptFiles = await getFilesByDept(deptIndex);
         setFiles(deptFiles);
         setSelectedFile("Select File"); 
+        setAnalytics(null);
     };
 
     const handleFileSelect = (fileName) => {
@@ -52,53 +52,96 @@ function Dashboard(){
         window.open(url, '_blank'); // Open file in new tab
     };
 
-    
-    const values = [
-        {
-            image: "skill_ratio.png",
-            title: "Skills Ratio",
-            description: "Description 1",
-        },
-        {
-            image: "skill_distribution.png",
-            title: "Skills Distribution",
-            description: "Description 2",
-        },
-        {
-            image: "skill_progression.png",
-            title: "Skills Progression",
-            description: "Description 3",
-        },
-    ];
-
-    const [excelData, setExcelData] = useState([]);
-
-
-    function loadStatistics() {
-    return values.map((option, index) => (
-        <div className='statistics' key={index}>
-            <a href={`/${option.image}`} target="_blank" rel="noopener noreferrer">
-                <img src={`/${option.image}`} alt={option.title} />
-            </a>
-            <h1>{option.title}</h1>
-            <p>{option.description}</p>
-        </div>
-    ));
-}
+    useEffect(() => {
+        if (selectedDeptIndex !== null) {
+        fetchFiles(selectedDeptIndex);
+        }
+    }, [selectedDeptIndex]);
 
     useEffect(() => {
-    setExcelData([]); 
+        async function analyzeFile() {
+        if (!selectedFile || selectedFile === "Select File") {
+            console.log("Select File");
+            setAnalytics(null);
+            return;
+        }
 
-    fetch('/BSIT_AY2024-2025.xlsx')
-        .then(res => res.arrayBuffer())
-        .then(arrayBuffer => {
-            const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-            setExcelData(jsonData);
-        })
-        .catch(err => console.error("Error loading Excel file:", err));
-    }, []);
+        const fileRecord = files.find(f => f.fileName === selectedFile);
+        if (!fileRecord) {
+            console.log("No File Record");
+            setAnalytics(null);
+            return;
+        }
+
+        const result = await analyzeExcelWithProgression(fileRecord.file);
+        console.log("Loaded Successfully");
+        console.log("Analytics result:", result);
+        setAnalytics(result);
+        }
+
+        analyzeFile();
+    }, [selectedFile, files]);
+
+    
+    const defaultSkills = [
+        "Default",
+        "Default",
+        "Default",
+        "Default",
+        "Default",
+        "Default",
+        "Default",
+        "Default",
+        "Default",
+        "Default",
+    ];
+
+    const defaultSkillDistribution = defaultSkills.map(skill => ({
+        skill,
+        checkCount: 0,
+        percentage: 0,
+    }));
+
+    const defaultLineChartData = {
+        skills: defaultSkills,
+        years: ["End of 1st Year", "End of 2nd Year", "End of 3rd Year", "End of 4th Year"],
+        series: [
+            { name: "End of 1st Year", data: Array(defaultSkills.length).fill(0) },
+            { name: "End of 2nd Year", data: Array(defaultSkills.length).fill(0) },
+            { name: "End of 3rd Year", data: Array(defaultSkills.length).fill(0) },
+            { name: "End of 4th Year", data: Array(defaultSkills.length).fill(0) },
+        ],
+        };
+    
+    useEffect(() => {
+  async function loadExcel() {
+    if (!selectedFile || selectedFile === "Select File") {
+      setExcelData([]); // clear data if no file selected
+      return;
+    }
+
+    // Find the file object from your files array
+    const fileRecord = files.find(f => f.fileName === selectedFile);
+        if (!fileRecord) {
+        console.error("Selected file not found in files list");
+        setExcelData([]);
+        return;
+        }
+
+        try {
+        const arrayBuffer = await fileRecord.file.arrayBuffer(); // get file data as arrayBuffer
+        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        setExcelData(jsonData);
+        } catch (err) {
+        console.error("Error loading selected Excel file:", err);
+        setExcelData([]);
+        }
+    }
+
+    loadExcel();
+    }, [selectedFile, files]);
 
 
 
@@ -113,33 +156,38 @@ function Dashboard(){
                 onSelect={handleFileSelect} 
             />
             
-            <button className='btn btn-primary' onClick={handlePreview} disabled={selectedFile === "Select File"}>
-                Preview File
-            </button>
         </div>
+        
         <div className='statistics-area'>
             <h1>Statistics</h1>
             <div className='statistics-container'>
-                {loadStatistics()}
+                
+                
+                <SkillBarChart data={analytics?.skillDistribution || defaultSkillDistribution} />
+                
+                <SkillsLineChart lineChartData={analytics?.lineChartData|| defaultLineChartData} />
+
             </div>
         </div>
+        
         <div className='excel-area'>
             <h1>Excel Values</h1>
             <div className='excel-container'>
                 <table>
-                    <tbody>
-                        {excelData.map((row, rowIndex) => (
-                            <tr key={rowIndex}>
-                                {row.map((cell, cellIndex) => (
-                                    <td key={cellIndex}>{cell}</td>
-                                ))}
-                            </tr>
+                <tbody>
+                    {excelData.map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                        {row.map((cell, cellIndex) => (
+                        <td key={cellIndex}>{cell}</td>
                         ))}
-                    </tbody>
+                    </tr>
+                    ))}
+                </tbody>
                 </table>
             </div>
-
         </div>
+
+
     </div>
     )
 }
