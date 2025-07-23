@@ -106,10 +106,12 @@
     border: solid;
     border-width: 1px;
     border-color: black;
-    max-width:calc(100vs - 20px);
+    max-width:calc(100vw - 20px);
     margin-left:20px;
     margin-right:20px;
     padding: 10px 30px 10px 30px;
+    height: 460px;
+    overflow-y: auto;
 }
 
 .manage-file-card{
@@ -132,7 +134,7 @@
 
 .manage-file-card-title {
     display:flex; 
-    font-size: 17px;
+    font-size: 18px;
     font-weight: bold;
 }
 
