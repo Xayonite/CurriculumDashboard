@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    
 }
 
 .file-manager-content h1{
@@ -137,4 +138,8 @@
 
 .manage-file-card-dropdown {
     margin-left:25px;
+}
+
+.manage-file-card-dropdown::-webkit-scrollbar {
+  display: none;
 }
