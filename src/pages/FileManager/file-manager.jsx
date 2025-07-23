@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import ChooseFileBox from './subcomponents/chooseFileBox';
-import SelectDeptBox from './subcomponents/selectDeptBox';
 import FileManageCard from './subcomponents/FileManagerCard';
+import SelectDeptBox from '../../components/selectDeptBox';
 import { addFile, getFileByFileName } from '../../database/db';
 import './file-manager.css'
 

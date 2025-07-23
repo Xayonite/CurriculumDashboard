@@ -1,13 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { getFilesByDept } from '../../database/db';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import SelectDeptBox from '../../components/selectDeptBox';
+import SelectFileBox from '../../components/selectFileBox';
 import './dashboard.css'
 
 function Dashboard(){
-    const programs = ["BS IT", "BS CS", "BS IS", "BS EMC", "BS DS"];
-    const schoolYears = ["A.Y 2024 - 2025", "A.Y 2023 - 2024", "A.Y 2022 - 2023"];
+    const [selectedDept, setSelectedDept] = useState(null);
+    const [selectedDeptIndex, setDeptIndex] = useState(null);
+    const [files, setFiles] = useState([]);
+    const [selectedFile, setSelectedFile] = useState("Select File");
 
+    const handleDeptChange = (dept, index) => {
+        setSelectedDept(dept);
+        setDeptIndex(index);
+        console.log("Selected Department:", dept);
+        console.log("Index of Department:", index);
+    };
+
+    useEffect(() => {
+        if (selectedDeptIndex !== null) {
+        fetchFiles(selectedDeptIndex);
+        }
+    }, [selectedDeptIndex]);
+
+    const fetchFiles = async (deptIndex) => {
+        const deptFiles = await getFilesByDept(deptIndex);
+        setFiles(deptFiles);
+        setSelectedFile("Select File"); 
+    };
+
+    const handleFileSelect = (fileName) => {
+        setSelectedFile(fileName);
+    };
+    
+    const handlePreview = async () => {
+        if (selectedFile === "Select File") {
+            alert("Please select a file to preview!");
+            return;
+        }
+
+        const fileRecord = files.find(file => file.fileName === selectedFile);
+        if (!fileRecord) {
+            alert("File not found in database.");
+            return;
+        }
+
+        const url = URL.createObjectURL(fileRecord.file);
+        window.open(url, '_blank'); // Open file in new tab
+    };
+
+    
     const values = [
         {
             image: "skill_ratio.png",
@@ -26,46 +71,8 @@ function Dashboard(){
         },
     ];
 
-    const [selectedProgram, setSelectedProgram] = useState("Choose Program");
-    const [selectedYear, setSelectedYear] = useState("Select School Year");
-
     const [excelData, setExcelData] = useState([]);
 
-    function loadProgramOptions() {
-        return (
-            <DropdownButton
-                id="dropdown-program-button"
-                title={selectedProgram}
-                className='dropdown-button'>
-                {programs.map((option, index) => (
-                    <Dropdown.Item
-                        key={index}
-                        className='dropdown-option'
-                        onClick={() => setSelectedProgram(option)}>
-                        {option}
-                    </Dropdown.Item>
-                ))}
-            </DropdownButton>
-        );
-    }
-
-    function loadYearOptions() {
-        return (
-            <DropdownButton
-                id="dropdown-year-button"
-                title={selectedYear}
-                className='dropdown-button'>
-                {schoolYears.map((option, index) => (
-                    <Dropdown.Item
-                        key={index}
-                        className='dropdown-option'
-                        onClick={() => setSelectedYear(option)}>
-                        {option}
-                    </Dropdown.Item>
-                ))}
-            </DropdownButton>
-        );
-    }
 
     function loadStatistics() {
     return values.map((option, index) => (
@@ -98,8 +105,17 @@ function Dashboard(){
     return (
     <div className='dashboard-content'>
         <div className='dropdown-area'>
-            {loadProgramOptions()}
-            {loadYearOptions()}
+            <SelectDeptBox onSelect={handleDeptChange}/>
+
+            <SelectFileBox 
+                files={files} 
+                selectedFile={selectedFile} 
+                onSelect={handleFileSelect} 
+            />
+            
+            <button className='btn btn-primary' onClick={handlePreview} disabled={selectedFile === "Select File"}>
+                Preview File
+            </button>
         </div>
         <div className='statistics-area'>
             <h1>Statistics</h1>

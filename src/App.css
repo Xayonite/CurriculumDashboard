@@ -27,3 +27,31 @@
     flex: 1;
     padding: 36px;
 }
+
+.dropdown-button .dropdown-toggle{
+    border-radius: 0px;
+    border-color: black;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 6px 12px;
+    width: 212px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-button .dropdown-menu {
+    min-width: 212px;
+    max-width: 500px;
+    border-radius: 0px;
+    margin-top: -2px !important;
+}
+
+.dropdown-option {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
