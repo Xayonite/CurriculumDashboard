@@ -1,4 +1,10 @@
-body{
-  margin: 0px;
+/* Allow scrolling but hide scrollbars globally */
+html, body {
+  overflow-y: auto;          /* Enable scrolling */
+  scrollbar-width: none;     /* Firefox hides scrollbar */
 }
 
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari, Edge hides scrollbar */
+}
