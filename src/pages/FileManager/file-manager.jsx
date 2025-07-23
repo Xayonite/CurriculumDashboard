@@ -2,7 +2,7 @@ import {useState} from 'react';
 import ChooseFileBox from './subcomponents/chooseFileBox';
 import SelectDeptBox from './subcomponents/selectDeptBox';
 import FileManageCard from './subcomponents/FileManagerCard';
-import { addFile } from '../../database/db';
+import { addFile, getFileByFileName } from '../../database/db';
 import './file-manager.css'
 
 
@@ -10,7 +10,9 @@ function FileManager(){
     const [selectedDept, setSelectedDept] = useState(null);
     const [selectedDeptIndex, setDeptIndex] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [fileUploaded, setFileUploaded] = useState(false);
 
+    
     const handleDeptChange = (dept, index) => {
         setSelectedDept(dept);
         setDeptIndex(index);
@@ -19,13 +21,26 @@ function FileManager(){
     };
 
     const handleUpload = async () => {
-        if (selectedFile && selectedDeptIndex !== null) {
-        await addFile(selectedFile, selectedDeptIndex);
-        alert('File uploaded to IndexedDB!');
-        setSelectedFile(null);
-        
-        } else {
-        alert('Please select both a file and a department.');
+        if (!selectedFile || selectedDeptIndex === null) {
+            alert('Please select both a file and a department.');
+            return;
+        }
+
+        try {
+            const existingFile = await getFileByFileName(selectedFile.name);
+
+            if (existingFile) {
+            alert(`File "${selectedFile.name}" already uploaded.`);
+            return;
+            }
+
+            await addFile(selectedFile, selectedDeptIndex);
+            alert('File uploaded to IndexedDB!');
+            setSelectedFile(null);
+            setFileUploaded(prev => !prev); // Notify children to refresh
+        } catch (error) {
+            console.error('Upload failed:', error);
+            alert('An error occurred while uploading the file.');
         }
     };
 
@@ -58,7 +73,6 @@ function FileManager(){
                 <button className = 'upload-button' onClick = {handleUpload}> 
                     Upload 
                 </button>
-
             </div>
 
             {/* Manage Files Area */}
@@ -66,7 +80,12 @@ function FileManager(){
 
             <div className='manage-file-container'>
                 {manageFilesDepartments.map((dept, idx) => (
-                    <FileManageCard key = {idx} title = {dept} index = {idx} />
+                    <FileManageCard 
+                        key = {idx} 
+                        title = {dept} 
+                        index = {idx} 
+                        fileUploaded={fileUploaded}
+                    />
                 ))}
             </div>
             

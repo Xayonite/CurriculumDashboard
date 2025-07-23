@@ -35,13 +35,9 @@ export const getFileByFileName = async (fileName) => {
 };
 
 export const getFilesByDept = async (deptIndex) => {
-  const db = await initDB();
-  const tx = db.transaction(STORE_NAME, 'readonly');
-  const store = tx.objectStore(STORE_NAME);
-  const index = store.index('deptIndex');
-  const files = await index.getAll(deptIndex);
-  await tx.done;
-  return files;
+  const db = await initDB(); 
+  const allFiles = await db.getAll(STORE_NAME); 
+  return allFiles.filter(file => file.deptIndex === deptIndex); 
 };
 
 export const previewFileByFileName = async (fileName) => {
@@ -55,4 +51,14 @@ export const previewFileByFileName = async (fileName) => {
 
   const url = URL.createObjectURL(fileRecord.file);
   window.open(url);
+};
+
+export const deleteFileByName = async (fileName) => {
+  const db = await initDB();
+  const tx = db.transaction(STORE_NAME, 'readwrite');
+  const store = tx.objectStore(STORE_NAME);
+  
+  await store.delete(fileName);
+  
+  await tx.done;
 };
