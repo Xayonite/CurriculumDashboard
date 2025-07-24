@@ -164,17 +164,21 @@ function Dashboard(){
                 
                 {/* Ratios and Shits */}
 
-                <p>Ratio: {analytics?.ratioOfFocus || "No ratio info."}</p>
-                <p>Green Total: {analytics?.greenTotal || "No Green Total info."}</p>
-                <p>Red Total:  {analytics?.redTotal || "No Red Total info."}</p>
-                <p>Well Covered: {analytics?.wellCovered || "No Well Covered info."}</p>
-                <p>Low Coverage:  {analytics?.lowCoverage || "No Low Coverage info."}</p>
-                <p>Gaps: {analytics?.gaps || ""}</p>
+                <p><strong>Skills Ratio:</strong> {analytics?.ratioOfFocus || "No ratio info."}</p>
                 
-                <SkillBarChart data={analytics?.skillDistribution || defaultSkillDistribution} />
-                
-                <SkillsLineChart lineChartData={analytics?.lineChartData|| defaultLineChartData} />
 
+                <div className='graphs-container'>
+                    <SkillBarChart data={analytics?.skillDistribution || defaultSkillDistribution} fileName={selectedFile}/>
+                    <SkillsLineChart lineChartData={analytics?.lineChartData|| defaultLineChartData} fileName={selectedFile} />
+                </div>
+                
+                <div className='coverage-container'>
+                    <p><strong>Well Covered:</strong> {analytics?.wellCovered || "No Well Covered info."}</p>
+                    <p><strong>Low Coverage:</strong>  {analytics?.lowCoverage || "No Low Coverage info."}</p>
+                    {analytics?.gaps && analytics.gaps.length > 0 && (
+                        <p><strong>Gaps:</strong> {analytics.gaps}</p>
+                    )}
+                </div>
             </div>
         </div>
         

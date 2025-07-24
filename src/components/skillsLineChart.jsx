@@ -24,10 +24,10 @@ function SkillsLineChart({ lineChartData }) {
 
   return (
     <div className='graph-style'>
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer width="100%" height={300}>
         <LineChart
             data={chartData}
-            margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+            margin={{ top: 20, right: 20, left: 12, bottom: 80 }}
         >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="skill" angle={-45} textAnchor="end" interval={0} height={80} />

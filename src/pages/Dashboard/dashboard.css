@@ -11,6 +11,15 @@
     gap: 24px;
 }
 
+.dropdown-title{
+    display: inline-block;
+  max-width: 150px;         /* Adjust based on layout */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
 .dropdown-button .dropdown-toggle{
     border-radius: 0px;
     border-color: black;
@@ -93,7 +102,8 @@
     justify-content: center;
     gap: 40px;
     max-width: 100%;
-    max-height: 280px;
+    height: 180px;
+    max-height: 180px;
     overflow: auto;
     padding: 8px;
     border: solid;
@@ -108,3 +118,28 @@
     table-layout: fixed;
     border-collapse: collapse;
 }
+
+.graphs-container{
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.graph-style {
+  width: 100%;
+  height: 280px;
+  border: 1px solid;
+  padding: 0px;
+  overflow-y: auto;
+}
+
+.coverage-container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.coverage-container p{
+    margin: 0px;
+}
+

@@ -10,7 +10,7 @@ function SkillBarChart({ data }) {
         <ResponsiveContainer width="100%" height={300}>
         <BarChart
             data={data}
-            margin={{ top: 20, right: 30, left: 20, bottom: 70 }}
+            margin={{ top: 20, right: 20, left: 12, bottom: 70 }}
         >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
@@ -18,7 +18,7 @@ function SkillBarChart({ data }) {
             angle={-45}
             textAnchor="end"
             interval={0}
-            height={60}
+            height={80}
             />
             <YAxis />
             <Tooltip formatter={(value) => `${value.toFixed(1)}%`} />

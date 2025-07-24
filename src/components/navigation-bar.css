@@ -30,9 +30,8 @@
 }
 
 .navigation hr{
-    position: absolute;
   left: 0;
-  width: 99.8%;
+  width: 100%;
   margin: 0;
   border-color: black;
   background: black;

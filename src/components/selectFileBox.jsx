@@ -8,7 +8,11 @@ function SelectFileBox({ files, selectedFile, onSelect }){
 
     return (
             <DropdownButton
-            title={selectedFile}
+            title={
+                <span className="dropdown-title" title={selectedFile}>
+                {selectedFile}
+                </span>
+            }
             variant="secondary"
             disabled={files.length === 0}
             className='dropdown-button'

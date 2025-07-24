@@ -7,6 +7,7 @@ function Header({ currentPage }){
     return(
         <div className="header-text">
             <h1>{headerOptions[currentPage]}</h1>
+            <hr />
         </div>
     )
 }
