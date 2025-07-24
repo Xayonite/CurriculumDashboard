@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import * as XLSX from 'xlsx';
 import { getFilesByDept } from '../../database/db';
 import SelectDeptBox from '../../components/selectDeptBox';
 import SelectFileBox from '../../components/selectFileBox';
 import SkillBarChart from '../../components/skillBarChart';
 import SkillsLineChart from '../../components/skillsLineChart';
 import { analyzeExcelWithProgression } from '../../components/analytics';
+import FormattedList from '../../components/formattedList';
+import * as XLSX from 'xlsx';
 import './dashboard.css'
 
 function Dashboard(){
@@ -34,22 +35,6 @@ function Dashboard(){
 
     const handleFileSelect = (fileName) => {
         setSelectedFile(fileName);
-    };
-    
-    const handlePreview = async () => {
-        if (selectedFile === "Select File") {
-            alert("Please select a file to preview!");
-            return;
-        }
-
-        const fileRecord = files.find(file => file.fileName === selectedFile);
-        if (!fileRecord) {
-            alert("File not found in database.");
-            return;
-        }
-
-        const url = URL.createObjectURL(fileRecord.file);
-        window.open(url, '_blank'); // Open file in new tab
     };
 
     useEffect(() => {
@@ -114,31 +99,31 @@ function Dashboard(){
         };
     
     useEffect(() => {
-  async function loadExcel() {
-    if (!selectedFile || selectedFile === "Select File") {
-      setExcelData([]); // clear data if no file selected
-      return;
-    }
-
-    // Find the file object from your files array
-    const fileRecord = files.find(f => f.fileName === selectedFile);
-        if (!fileRecord) {
-        console.error("Selected file not found in files list");
-        setExcelData([]);
+    async function loadExcel() {
+        if (!selectedFile || selectedFile === "Select File") {
+        setExcelData([]); // clear data if no file selected
         return;
         }
 
-        try {
-        const arrayBuffer = await fileRecord.file.arrayBuffer(); // get file data as arrayBuffer
-        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        setExcelData(jsonData);
-        } catch (err) {
-        console.error("Error loading selected Excel file:", err);
-        setExcelData([]);
+        // Find the file object from your files array
+        const fileRecord = files.find(f => f.fileName === selectedFile);
+            if (!fileRecord) {
+            console.error("Selected file not found in files list");
+            setExcelData([]);
+            return;
+            }
+
+            try {
+            const arrayBuffer = await fileRecord.file.arrayBuffer(); // get file data as arrayBuffer
+            const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+            setExcelData(jsonData);
+            } catch (err) {
+            console.error("Error loading selected Excel file:", err);
+            setExcelData([]);
+            }
         }
-    }
 
     loadExcel();
     }, [selectedFile, files]);
@@ -158,28 +143,22 @@ function Dashboard(){
             
         </div>
         
-        <div className='statistics-area'>
+        <div className='statistics-container'>
             <h1>Statistics</h1>
-            <div className='statistics-container'>
-                
+    
                 {/* Ratios and Shits */}
-
                 <p><strong>Skills Ratio:</strong> {analytics?.ratioOfFocus || "No ratio info."}</p>
                 
-
                 <div className='graphs-container'>
-                    <SkillBarChart data={analytics?.skillDistribution || defaultSkillDistribution} fileName={selectedFile}/>
+                    <SkillBarChart skillDistribution={analytics?.skillDistribution || defaultSkillDistribution} fileName={selectedFile}/>
                     <SkillsLineChart lineChartData={analytics?.lineChartData|| defaultLineChartData} fileName={selectedFile} />
                 </div>
                 
                 <div className='coverage-container'>
-                    <p><strong>Well Covered:</strong> {analytics?.wellCovered || "No Well Covered info."}</p>
-                    <p><strong>Low Coverage:</strong>  {analytics?.lowCoverage || "No Low Coverage info."}</p>
-                    {analytics?.gaps && analytics.gaps.length > 0 && (
-                        <p><strong>Gaps:</strong> {analytics.gaps}</p>
-                    )}
+                    <p><strong>Well Covered:</strong> <FormattedList items={analytics?.wellCovered} emptyText="No well-covered skills." /></p>
+                    <p><strong>Low Coverage:</strong> <FormattedList items={analytics?.lowCoverage} emptyText="No low-coverage skills." /></p>
+                    <p><strong>Gaps:</strong> <FormattedList items={analytics?.gaps} emptyText="No gaps found." /></p>
                 </div>
-            </div>
         </div>
         
         <div className='excel-area'>

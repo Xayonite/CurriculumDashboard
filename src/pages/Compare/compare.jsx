@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import * as XLSX from 'xlsx';
 import { getFilesByDept } from '../../database/db';
 import SelectDeptBox from '../../components/selectDeptBox';
 import SelectFileBox from '../../components/selectFileBox';
 import SkillBarChart from '../../components/skillBarChart';
 import SkillsLineChart from '../../components/skillsLineChart';
 import { analyzeExcelWithProgression } from '../../components/analytics';
+import FormattedList from '../../components/formattedList';
 import './compare.css';
 
 function Compare() {
@@ -112,19 +112,16 @@ function Compare() {
                     <div className='graphs-container'>
                         <div className='graph-detail'>
                             <p>{fileA} ({deptAName})</p>
-                            <SkillBarChart data={analyticsA?.skillDistribution || defaultSkillDistribution} fileName={fileA} />
+                            <SkillBarChart skillDistribution={analyticsA?.skillDistribution || defaultSkillDistribution} fileName={fileA} />
                             <SkillsLineChart lineChartData={analyticsA?.lineChartData || defaultLineChartData} fileName={fileA} />
                         </div>
                     </div>
 
                     <div className='coverage-container'>
                         <div>
-                            <p><strong>Skill Ratio:</strong> {analyticsA?.ratioOfFocus ?? "None"}</p>
-                            <p><strong>Well Covered:</strong> {analyticsA?.wellCovered || "None"}</p>
-                            <p><strong>Low Coverage:</strong> {analyticsA?.lowCoverage || "None"}</p>
-                            {analyticsA?.gaps?.length > 0 && (
-                                <p><strong>Gaps:</strong> {analyticsA.gaps}</p>
-                            )}
+                            <p><strong>Well Covered:</strong> <FormattedList items={analyticsA?.wellCovered} emptyText="No well-covered skills." /></p>
+                            <p><strong>Low Coverage:</strong> <FormattedList items={analyticsA?.lowCoverage} emptyText="No low-coverage skills." /></p>
+                            <p><strong>Gaps:</strong> <FormattedList items={analyticsA?.gaps} emptyText="No gaps found." /></p>
                         </div>
                     </div>
                 </div>
@@ -150,19 +147,17 @@ function Compare() {
                     <div className='graphs-container'>
                         <div className='graph-detail'>
                             <p>{fileB} ({deptBName})</p>
-                            <SkillBarChart data={analyticsB?.skillDistribution || defaultSkillDistribution} fileName={fileB} />
+                            <SkillBarChart skillDistribution={analyticsB?.skillDistribution || defaultSkillDistribution} fileName={fileB} />
                             <SkillsLineChart lineChartData={analyticsB?.lineChartData || defaultLineChartData} fileName={fileB} />
                         </div>
                     </div>
 
                     <div className='coverage-container'>
                         <div>
-                            <p><strong>Skill Ratio:</strong> {analyticsB?.ratioOfFocus ?? "None"}</p>
-                            <p><strong>Well Covered:</strong> {analyticsB?.wellCovered || "None"}</p>
-                            <p><strong>Low Coverage:</strong> {analyticsB?.lowCoverage || "None"}</p>
-                            {analyticsB?.gaps?.length > 0 && (
-                                <p><strong>Gaps:</strong> {analyticsB.gaps}</p>
-                            )}
+                            <p><strong>Well Covered:</strong> <FormattedList items={analyticsB?.wellCovered} emptyText="No well-covered skills." /></p>
+                            <p><strong>Low Coverage:</strong> <FormattedList items={analyticsB?.lowCoverage} emptyText="No low-coverage skills." /></p>
+                            <p><strong>Gaps:</strong> <FormattedList items={analyticsB?.gaps} emptyText="No gaps found." /></p>
+                                            
                         </div>
                     </div>
                 </div>

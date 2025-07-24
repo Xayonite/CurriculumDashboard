@@ -1,11 +1,15 @@
-import '../App.css';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
+import { useRef } from "react";
+import ChartDownloadButton from './chartDownloadButton';
+import '../App.css';
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7300"];
 
-function SkillsLineChart({ lineChartData }) {
+function SkillsLineChart({ lineChartData, fileName }) {
+  const chartRef = useRef(null);
+
   if (!lineChartData) return <div>Loading chart...</div>;
 
   const { skills, series } = lineChartData;
@@ -23,7 +27,7 @@ function SkillsLineChart({ lineChartData }) {
   });
 
   return (
-    <div className='graph-style'>
+    <div ref={chartRef} className='graph-style'>
         <ResponsiveContainer width="100%" height={300}>
         <LineChart
             data={chartData}
@@ -47,7 +51,15 @@ function SkillsLineChart({ lineChartData }) {
             ))}
         </LineChart>
         </ResponsiveContainer>
+
+        <ChartDownloadButton
+          chartRef={chartRef}
+          fileName={fileName}
+          type="Line"
+        />
+
     </div>
+    
   );
 }
 

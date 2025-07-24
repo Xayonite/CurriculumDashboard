@@ -1,15 +1,19 @@
-import '../App.css'
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip,
   ResponsiveContainer, CartesianGrid, Cell,
 } from "recharts";
+import { useRef } from "react";
+import ChartDownloadButton from "./chartDownloadButton";
+import '../App.css'
 
-function SkillBarChart({ data }) {
+function SkillBarChart({ skillDistribution, fileName  }) {
+  const chartRef = useRef(null);
+
   return (
-    <div className='graph-style'>
+    <div ref={chartRef} className='graph-style'>
         <ResponsiveContainer width="100%" height={300}>
         <BarChart
-            data={data}
+            data={skillDistribution}
             margin={{ top: 20, right: 20, left: 12, bottom: 70 }}
         >
             <CartesianGrid strokeDasharray="3 3" />
@@ -27,13 +31,20 @@ function SkillBarChart({ data }) {
             name="Coverage (%)"
             label={{ position: "top", formatter: (val) => `${val.toFixed(1)}%` }}
             >
-            {data.map((entry, index) => (
+            {skillDistribution.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
             </Bar>
         </BarChart>
         </ResponsiveContainer>
-    </div>
+
+        <ChartDownloadButton
+          chartRef={chartRef}
+          fileName={fileName}
+          type="Bar"
+        />
+
+        </div>
   );
 }
 
