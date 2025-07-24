@@ -52,10 +52,8 @@
 
 .statistics-container{
     display: flex;
-    justify-content: center;
-    gap: 40px;
+    flex-direction: column;
     width: 100%;
-    height: 280px;
 }
 
 .statistics{
@@ -102,6 +100,7 @@
     border-color: black;
     border-width: 1px;
     box-sizing: border-box;
+    font-size: 8px;
 }
 
 .excel-container table {
@@ -109,4 +108,3 @@
     table-layout: fixed;
     border-collapse: collapse;
 }
-
