@@ -12,16 +12,16 @@ export async function analyzeExcelWithProgression(fileBlob) {
     // ✅ Course rows (excluding header & last 3)
     const courseRows = data.slice(1, data.length - 3);
     
-    /*
+    
     const filteredCourseRows = courseRows.filter(row => {
         const col0 = String(row[0] || "").trim().toLowerCase();
         return col0 !== "" && col0 !== "course code" && !col0.includes("year");
     });
 
     const totalCourses = filteredCourseRows.length;
-    TESTING*/
+    /*TESTING
     const totalCourses = 55;
-
+    */
 
     // ✅ Check counts for bar chart
     const checkCounts = new Array(skills.length).fill(0);
