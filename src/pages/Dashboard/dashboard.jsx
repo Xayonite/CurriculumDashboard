@@ -162,6 +162,14 @@ function Dashboard(){
             <h1>Statistics</h1>
             <div className='statistics-container'>
                 
+                {/* Ratios and Shits */}
+
+                <p>Ratio: {analytics?.ratioOfFocus || "No ratio info."}</p>
+                <p>Green Total: {analytics?.greenTotal || "No Green Total info."}</p>
+                <p>Red Total:  {analytics?.redTotal || "No Red Total info."}</p>
+                <p>Well Covered: {analytics?.wellCovered || "No Well Covered info."}</p>
+                <p>Low Coverage:  {analytics?.lowCoverage || "No Low Coverage info."}</p>
+                <p>Gaps: {analytics?.gaps || ""}</p>
                 
                 <SkillBarChart data={analytics?.skillDistribution || defaultSkillDistribution} />
                 
