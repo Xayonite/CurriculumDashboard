@@ -23,7 +23,7 @@ const ChartDownloadButton = ({ chartRef, fileName, type = "line" }) => {
       onClick={handleDownload}
       className='chart-download-button'
     >
-      Download {type === "line" ? "Line" : "Bar"} Chart
+      Download {type === "Line" ? "Line" : "Bar"} Chart
     </button>
   );
 };
